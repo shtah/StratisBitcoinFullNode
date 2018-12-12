@@ -2,15 +2,15 @@
 | :---- | :------ | :---- |
 | [![Build Status](https://dev.azure.com/StratisProject/StratisBitcoinFullNode/_apis/build/status/HostedWindowsContainer-CI)](https://dev.azure.com/StratisProject/StratisBitcoinFullNode/_build/latest?definitionId=4) | [![Build Status](https://dev.azure.com/StratisProject/StratisBitcoinFullNode/_apis/build/status/HostedmacOS-CI)](https://dev.azure.com/StratisProject/StratisBitcoinFullNode/_build/latest?definitionId=6) | [![Build Status](https://dev.azure.com/StratisProject/StratisBitcoinFullNode/_apis/build/status/HostedUbuntu1604-CI)](https://dev.azure.com/StratisProject/StratisBitcoinFullNode/_build/latest?definitionId=5)
 
-Stratis Bitcoin
+Stratis Node
 ===============
 
 https://stratisplatform.com
 
-Bitcoin Implementation in C#
-----------------------------
+Multi Consensus Blockchain Implementation in C#
+--------------------------------------------------
 
-Stratis is an implementation of the Bitcoin protocol in C# on the [.NET Core](https://dotnet.github.io/) platform.  
+The Stratis blockchain node, inspired by the Bitcoin protocol, is a platform to build blockchains using the C# language on the [.NET Core](https://dotnet.github.io/) platform.  
 The node can run on the Bitcoin and Stratis networks.  
 Stratis Bitcoin is based on the [NBitcoin](https://github.com/MetacoSA/NBitcoin) project.  
 
