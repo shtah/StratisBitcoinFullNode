@@ -51,7 +51,10 @@ after_build:
       {
         Write-Host "[$env:configuration] STARTED dotnet pack" -foregroundcolor "magenta"
         
-        cd Stratis.Bitcoin
+        cd Impleum.BreezeD
+        dotnet pack -c $env:configuration -v m --no-build -o $env:APPVEYOR_BUILD_FOLDER\nuget\
+        
+        cd ../Stratis.Bitcoin
         dotnet pack -c $env:configuration -v m --no-build -o $env:APPVEYOR_BUILD_FOLDER\nuget\
         
         cd ../Stratis.Bitcoin.Api
