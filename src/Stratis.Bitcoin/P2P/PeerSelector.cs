@@ -63,6 +63,12 @@ namespace Stratis.Bitcoin.P2P
         /// </para>
         /// </summary>
         IEnumerable<PeerAddress> Handshaked();
+
+        /// <summary>Determines whether all not banned peers reached connection attempts threshold.</summary>
+        bool HasAllPeersReachedConnectionThreshold();
+
+        /// <summary>Resets connection attempts count for all not banned peers.</summary>
+        void ResetConnectionAttemptsOnNotBannedPeers();
     }
 
     public sealed class PeerSelector : IPeerSelector
@@ -183,13 +189,42 @@ namespace Stratis.Bitcoin.P2P
                 this.logger.LogTrace("[RETURN_ATTEMPTED_HC_FAILED]");
                 return attempted;
             }
+            
+            if (this.HasAllPeersReachedConnectionThreshold())
+                this.ResetConnectionAttemptsOnNotBannedPeers();
 
-            // If all the selection criteria failed to return a set of peers,
-            // then let the caller try again.
-            else
-                this.logger.LogTrace("[RETURN_NO_PEERS]");
-
+            // If all the selection criteria failed to return a set of peers, then let the caller try again.
+            this.logger.LogTrace("(-)[RETURN_NO_PEERS]");
             return new PeerAddress[] { };
+        }
+
+        /// <inheritdoc/>
+        public bool HasAllPeersReachedConnectionThreshold()
+        {
+            this.logger.LogTrace("()");
+
+            IEnumerable<PeerAddress> peers = this.peerAddresses.Values;
+
+            int attemptedReachedThresholdCount = peers.Count(p => p.ConnectionAttempts == PeerAddress.AttemptThreshold);
+            bool areAllPeersReachedThreshold = attemptedReachedThresholdCount == peers.Count();
+
+            this.logger.LogTrace("(-):{0}={1}", nameof(areAllPeersReachedThreshold), areAllPeersReachedThreshold);
+            return areAllPeersReachedThreshold;
+        }
+
+        /// <inheritdoc/>
+        public void ResetConnectionAttemptsOnNotBannedPeers()
+        {
+            this.logger.LogTrace("()");
+
+            IEnumerable<PeerAddress> peers = this.peerAddresses.Values;
+            this.logger.LogTrace("Resetting attempts for {0} addresses.", peers.Count());
+
+            // Reset attempts for all the peers since we've ran out of options.
+            foreach (PeerAddress peer in peers)
+                peer.ResetAttempts();
+
+            this.logger.LogTrace("(-)");
         }
 
         /// <inheritdoc/>

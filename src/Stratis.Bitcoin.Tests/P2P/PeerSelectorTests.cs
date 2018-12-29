@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using NBitcoin.Protocol;
+using Microsoft.Extensions.Logging;
+using Stratis.Bitcoin.Configuration;
 using Stratis.Bitcoin.Configuration.Logging;
 using Stratis.Bitcoin.P2P;
 using Stratis.Bitcoin.Utilities;
@@ -467,6 +470,51 @@ namespace Stratis.Bitcoin.Tests.P2P
 
             var peers = peerAddressManager.PeerSelector.SelectPeersForDiscovery(5);
             Assert.Equal(2, peers.Count());
+        }
+
+        [Fact]
+        public void PeerSelector_HasAllPeersReachedConnectionThreshold()
+        {
+            var peerAddress = new PeerAddress() { Endpoint = new IPEndPoint(new IPAddress(2), 345) };
+
+            var peerAddresses = new ConcurrentDictionary<IPEndPoint, PeerAddress>();
+            peerAddresses.AddOrUpdate(peerAddress.Endpoint, peerAddress, (x, y) => peerAddress);
+
+            var peerSelector = new PeerSelector(new DateTimeProvider(), this.extendedLoggerFactory, peerAddresses);
+
+            Assert.False(peerSelector.HasAllPeersReachedConnectionThreshold());
+
+            for (int i = 0; i < 5; i++)
+                peerAddress.SetAttempted(DateTime.UtcNow);
+
+            Assert.True(peerSelector.HasAllPeersReachedConnectionThreshold());
+        }
+
+        [Fact]
+        public void PeerSelector_CanResetAttempts()
+        {
+            var peerAddress = new PeerAddress() { Endpoint = new IPEndPoint(new IPAddress(2), 345) };
+
+            var peerAddresses = new ConcurrentDictionary<IPEndPoint, PeerAddress>();
+            peerAddresses.AddOrUpdate(peerAddress.Endpoint, peerAddress, (x, y) => peerAddress);
+
+            var peerSelector = new PeerSelector(new DateTimeProvider(), this.extendedLoggerFactory, peerAddresses);
+
+            for (int i = 0; i < 5; i++)
+                peerAddress.SetAttempted(DateTime.UtcNow);
+
+            Assert.Equal(5, peerAddress.ConnectionAttempts);
+            Assert.True(peerSelector.HasAllPeersReachedConnectionThreshold());
+
+            peerSelector.ResetConnectionAttemptsOnNotBannedPeers();
+
+            Assert.Equal(0, peerAddress.ConnectionAttempts);
+        }
+
+        private PeerAddressManager CreatePeerAddressManager(DataFolder peerFolder)
+        {
+            var peerAddressManager = new PeerAddressManager(DateTimeProvider.Default, peerFolder, this.extendedLoggerFactory);
+            return peerAddressManager;
         }
     }
 }
