@@ -75,5 +75,20 @@ namespace Stratis.Bitcoin.Features.Consensus.Interfaces
         /// </para>
         /// </remarks>
         Target GetNextTargetRequired(StakeChain stakeChain, ChainedBlock chainedBlock, NBitcoin.Consensus consensus, bool proofOfStake);
+
+
+        /// <summary>
+        /// ppcoin: total coin age spent in transaction, in the unit of coin-days.
+        /// Only those coins meeting minimum age requirement counts. As those
+        /// transactions not in main chain are not currently indexed so we
+        /// might not find out about their coin age. Older transactions are
+        /// guaranteed to be in main chain by sync-checkpoint. This rule is
+        /// introduced to help nodes establish a consistent view of the coin
+        /// age (trust score) of competing branches.
+        /// </summary>
+        /// <param name="coinstakeTx"></param>
+        /// <param name="prevBlock"></param>
+        /// <returns></returns>
+        long GetCoinAge(Transaction coinstakeTx, ChainedBlock prevBlock);
     }
 }

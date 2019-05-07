@@ -19,11 +19,17 @@ namespace Stratis.Bitcoin.Features.Api
         /// <summary>The default port used by the API when the node runs on the Stratis network.</summary>
         public const int DefaultStratisApiPort = 37221;
 
+        /// <summary>The default port used by the API when the node runs on the Stratis network.</summary>
+        public const int DefaultImpleumApiPort = 38222;
+
         /// <summary>The default port used by the API when the node runs on the bitcoin testnet network.</summary>
         public const int TestBitcoinApiPort = 38220;
 
         /// <summary>The default port used by the API when the node runs on the Stratis testnet network.</summary>
         public const int TestStratisApiPort = 38221;
+
+        /// <summary>The default port used by the API when the node runs on the Stratis testnet network.</summary>
+        public const int TestImpleumApiPort = 39222;
 
         /// <summary>The default port used by the API when the node runs on the Stratis network.</summary>
         public const string DefaultApiHost = "http://localhost";
@@ -63,7 +69,7 @@ namespace Stratis.Bitcoin.Features.Api
 
             // Find out which port should be used for the API.
             var apiPort = config.GetOrDefault("apiport", GetDefaultPort(nodeSettings.Network));
-            
+
             // If no port is set in the API URI.
             if (apiUri.IsDefaultPort)
             {
@@ -100,7 +106,9 @@ namespace Stratis.Bitcoin.Features.Api
         {
             if (network.IsBitcoin())
                 return network.IsTest() ? TestBitcoinApiPort : DefaultBitcoinApiPort;
-            
+            if (network.IsImpleum())
+                return network.IsTest() ? TestImpleumApiPort : DefaultImpleumApiPort;
+
             return network.IsTest() ? TestStratisApiPort : DefaultStratisApiPort;
         }
 

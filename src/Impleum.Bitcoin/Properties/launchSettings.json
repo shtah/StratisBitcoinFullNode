@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "Impleum.ImpleumD": {
+      "commandName": "Project"
+    },
+    "Impleum.ImpleumD Test": {
+      "commandName": "Project",
+      "commandLineArgs": "-testnet -addnode=94.131.240.45"
+    },
+    "Impleum.ImpleumD with RPC": {
+      "commandName": "Project",
+      "commandLineArgs": "-testnet -server -rpcpassword=password -rpcuser=user"
+    }
+  }
+}

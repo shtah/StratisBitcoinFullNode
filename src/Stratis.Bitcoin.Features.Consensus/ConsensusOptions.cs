@@ -27,12 +27,12 @@ namespace Stratis.Bitcoin.Features.Consensus
         /// </summary>
         public PosConsensusOptions()
         {
-            this.MaxMoney = long.MaxValue;
+            this.MaxMoney = 100000000 * Money.COIN;
             this.CoinbaseMaturity = 50;
 
-            this.ProofOfWorkReward = Money.Coins(4);
-            this.ProofOfStakeReward = Money.COIN;
-            this.PremineReward = Money.Coins(98000000);
+            this.ProofOfWorkReward = Money.Coins(48);
+            this.ProofOfStakeReward = Money.Coins(5m);
+            this.PremineReward = Money.Coins(1000000);
             this.PremineHeight = 2;
             this.StakeMinConfirmations = 50;
             this.StakeMinAge = 60;

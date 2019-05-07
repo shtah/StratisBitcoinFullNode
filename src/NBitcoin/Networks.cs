@@ -577,9 +577,9 @@ namespace NBitcoin
             consensus.RuleChangeActivationThreshold = 1916; // 95% of 2016
             consensus.MinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
 
-            consensus.BIP9Deployments[BIP9Deployments.TestDummy] = new BIP9DeploymentsParameters(28, 1199145601, 1230767999);
-            consensus.BIP9Deployments[BIP9Deployments.CSV] = new BIP9DeploymentsParameters(0, 1462060800, 1493596800);
-            consensus.BIP9Deployments[BIP9Deployments.Segwit] = new BIP9DeploymentsParameters(1, 0, 0);
+            //consensus.BIP9Deployments[BIP9Deployments.TestDummy] = new BIP9DeploymentsParameters(28, 1199145601, 1230767999);
+            //consensus.BIP9Deployments[BIP9Deployments.CSV] = new BIP9DeploymentsParameters(0, 1462060800, 1493596800);
+            //consensus.BIP9Deployments[BIP9Deployments.Segwit] = new BIP9DeploymentsParameters(1, 0, 0);
 
             consensus.LastPOWBlock = 100000;
 
@@ -588,7 +588,7 @@ namespace NBitcoin
 
             consensus.CoinType = 769;
 
-            consensus.DefaultAssumeValid = new uint256("0x04c2b9fe7e52e0c6d54fbdf5018fcda8709457b1c12b0dc8eae185b2018de19a"); // 215001
+            consensus.DefaultAssumeValid = new uint256("0xe8dd9ea41e9d8935f31a0f1bd8378a777434dc51549a1c685855a7ec4d5546b1"); // 215001
 
             Block genesis = CreateImpleumGenesisBlock(1523364655, 2380297, 0x1e0fffff, 1, Money.Zero);
             consensus.HashGenesisBlock = genesis.GetHash(consensus.NetworkOptions);
@@ -600,16 +600,16 @@ namespace NBitcoin
             messageStart[0] = 0x51;
             messageStart[1] = 0x11;
             messageStart[2] = 0x41;
-            messageStart[3] = 0x05;
-            var magic = BitConverter.ToUInt32(messageStart, 0); //0x5223570; 
+            messageStart[3] = 0x31;
+            var magic = BitConverter.ToUInt32(messageStart, 0); //0x5223570;
 
             Assert(consensus.HashGenesisBlock == uint256.Parse("0x02a8be139ec629b13df22e7abc7f9ad5239df39efaf2f5bf3ab5e4d102425dbe"));
             Assert(genesis.Header.HashMerkleRoot == uint256.Parse("0xbd3233dd8d4e7ce3ee8097f4002b4f9303000a5109e02a402d41d2faf74eb244"));
 
             var builder = new NetworkBuilder()
                 .SetName("ImpleumMain")
-                .SetRootFolderName(StratisRootFolderName)
-                .SetDefaultConfigFilename(StratisDefaultConfigFilename)
+                .SetRootFolderName(ImpleumRootFolderName)
+                .SetDefaultConfigFilename(ImpleumDefaultConfigFilename)
                 .SetConsensus(consensus)
                 .SetMagic(magic)
                 .SetGenesis(genesis)
@@ -622,7 +622,7 @@ namespace NBitcoin
                 .AddDNSSeeds(new[]
                 {
                     new DNSSeedData("impleum.com", "impleum.com"),
-                    new DNSSeedData("explorer.impleum.com", "explorer.impleum.com")
+                    new DNSSeedData("texplorer.impleum.com", "texplorer.impleum.com")
                 })
 
                 .SetBase58Bytes(Base58Type.PUBKEY_ADDRESS, new byte[] { (102) })
@@ -640,7 +640,7 @@ namespace NBitcoin
                 .SetBech32(Bech32Type.WITNESS_PUBKEY_ADDRESS, "bc")
                 .SetBech32(Bech32Type.WITNESS_SCRIPT_ADDRESS, "bc");
 
-            var seed = new[] { "109.108.77.134", "62.80.181.141" };
+            var seed = new[] { "85.209.44.7", "62.80.181.141" };
             var fixedSeeds = new List<NetworkAddress>();
             // Convert the pnSeeds array into usable address objects.
             Random rand = new Random();
@@ -726,29 +726,29 @@ namespace NBitcoin
         private static Network InitImpleumRegTest()
         {
             // TODO: move this to Networks
-            var net = Network.GetNetwork("StratisRegTest");
+            var net = Network.GetNetwork("ImpleumRegTest");
             if (net != null)
                 return net;
 
             Block.BlockSignature = true;
             Transaction.TimeStamp = true;
 
-            var consensus = Network.StratisTest.Consensus.Clone();
+            var consensus = Network.ImpleumTest.Consensus.Clone();
             consensus.PowLimit = new Target(uint256.Parse("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));
 
             consensus.PowAllowMinDifficultyBlocks = true;
             consensus.PowNoRetargeting = true;
 
             var messageStart = new byte[4];
-            messageStart[0] = 0xcd;
+            messageStart[0] = 0xdc;
             messageStart[1] = 0xf2;
             messageStart[2] = 0xc0;
             messageStart[3] = 0xef;
             var magic = BitConverter.ToUInt32(messageStart, 0);
 
-            var genesis = Network.StratisMain.GetGenesis();
-            genesis.Header.Time = 1494909211;
-            genesis.Header.Nonce = 2433759;
+            var genesis = Network.ImpleumMain.GetGenesis();
+            genesis.Header.Time = 152436701;
+            genesis.Header.Nonce = 1353602;
             genesis.Header.Bits = consensus.PowLimit;
             consensus.HashGenesisBlock = genesis.GetHash(consensus.NetworkOptions);
 
@@ -757,16 +757,16 @@ namespace NBitcoin
             consensus.DefaultAssumeValid = null; // turn off assumevalid for regtest.
 
             var builder = new NetworkBuilder()
-                .SetName("StratisRegTest")
-                .SetRootFolderName(StratisRootFolderName)
-                .SetDefaultConfigFilename(StratisDefaultConfigFilename)
+                .SetName("ImpleumRegTest")
+                .SetRootFolderName(ImpleumRootFolderName)
+                .SetDefaultConfigFilename(ImpleumDefaultConfigFilename)
                 .SetConsensus(consensus)
                 .SetMagic(magic)
                 .SetGenesis(genesis)
-                .SetPort(18444)
-                .SetRPCPort(18442)
-                .SetMaxTimeOffsetSeconds(StratisMaxTimeOffsetSeconds)
-                .SetMaxTipAge(StratisDefaultMaxTipAgeInSeconds)
+                .SetPort(17444)
+                .SetRPCPort(17442)
+                .SetMaxTimeOffsetSeconds(ImpleumMaxTimeOffsetSeconds)
+                .SetMaxTipAge(ImpleumDefaultMaxTipAgeInSeconds)
                 .SetBase58Bytes(Base58Type.PUBKEY_ADDRESS, new byte[] { (65) })
                 .SetBase58Bytes(Base58Type.SCRIPT_ADDRESS, new byte[] { (196) })
                 .SetBase58Bytes(Base58Type.SECRET_KEY, new byte[] { (65 + 128) })

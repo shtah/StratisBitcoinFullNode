@@ -193,7 +193,7 @@ namespace Stratis.Bitcoin.Configuration
             // Setting the data directory.
             if (this.DataDir == null)
             {
-                this.DataDir = this.CreateDefaultDataDirectories(Path.Combine("StratisNode", this.Network.RootFolderName), this.Network);
+                this.DataDir = this.CreateDefaultDataDirectories(Path.Combine("ImpleumNode", this.Network.RootFolderName), this.Network);
             }
             else
             {
