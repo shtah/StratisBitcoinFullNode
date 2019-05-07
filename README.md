@@ -10,7 +10,7 @@
 [6]: https://travis-ci.org/stratisproject/StratisBitcoinFullNode
 
 
-Stratis Bitcoin
+Impleum Bitcoin
 ===============
 
 https://stratisplatform.com
@@ -61,7 +61,7 @@ Create a Blockchain in a .NET Core style programming
 What's Next
 ----------
 
-We plan to add many more features on top of the Stratis Bitcoin blockchain:
+We plan to add many more features on top of the Impleum Bitcoin blockchain:
 Sidechains, Private/Permissioned blockchain, Compiled Smart Contracts, NTumbleBit/Breeze wallet and more...
 
 Running a FullNode
@@ -70,7 +70,7 @@ Running a FullNode
 Our full node is currently in alpha.  
 
 ```
-git clone https://github.com/stratisproject/StratisBitcoinFullNode.git  
+git clone https://github.com/shtah/StratisBitcoinFullNode.git  
 cd StratisBitcoinFullNode\src
 
 dotnet restore
@@ -79,9 +79,9 @@ dotnet build
 ```
 
 To run on the Bitcoin network: ``` Stratis.BitcoinD\dotnet run ```  
-To run on the Stratis network: ``` Stratis.StratisD\dotnet run ```  
+To run on the Impleum network: ``` Impleum.BitcoinD\dotnet run ```  
 
-See more details [here](https://github.com/stratisproject/StratisBitcoinFullNode/blob/master/Documentation/getting-started.md)
+See more details [here](https://github.com/impleum/StratisBitcoinFullNode/blob/master/Documentation/getting-started.md)
 
 Development
 -----------
